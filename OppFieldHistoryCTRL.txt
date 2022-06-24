@@ -1,0 +1,66 @@
+public class OppFieldHistoryCTRL {
+    @AuraEnabled
+    public static List<wrapClass> GetOppField(String oppId)
+    {   
+        Map<String,String> objMonthNum = new Map<String,String>();
+        objMonthNum.put('0','Jan');
+        objMonthNum.put('1','Feb');
+        objMonthNum.put('2','Mar');
+        objMonthNum.put('3','April');
+        objMonthNum.put('4','May');
+        objMonthNum.put('5','Jun');
+        objMonthNum.put('6','July');
+        objMonthNum.put('7','Aug');
+        objMonthNum.put('8','Sep');
+        objMonthNum.put('9','Oct');
+        objMonthNum.put('10','Nov');
+        objMonthNum.put('11','Dec');
+        List<wrapClass> objwraList = new List<wrapClass>();
+        List<OpportunityFieldHistory> lstOppFieldHis=[Select Id,DataType,Field,OpportunityId,NewValue,OldValue,Opportunity.LastModifiedDate,Opportunity.LastModifiedBy.Name FROM OpportunityFieldHistory where OpportunityId =:oppId];
+        for(OpportunityFieldHistory objFieldHis : lstOppFieldHis){
+            System.debug('####### '+objFieldHis.Field);
+            if(objFieldHis.Field !='created'){
+                String LabelName  =(String)Schema.getGlobalDescribe().get('Opportunity').getDescribe().fields.getMap().get(objFieldHis.Field).getDescribe().getLabel();
+                DateTime Modify = objFieldHis.Opportunity.LastModifiedDate;
+                String monthDig = String.valueOf(Modify.month());
+                String DateTimeValue = objMonthNum.get(String.valueOf(Modify.month()))+' '+Modify.day()+', '+Modify.year();
+                
+               /* String DateTimeValue = '';
+                if(monthDig.length() >2){
+                    //DateTimeValue = Modify.month()+'-'+Modify.day()+'-'+Modify.year()+' '+Modify.hour()+':'+Modify.minute();
+                    DateTimeValue = Modify.month()+'-'+Modify.day()+'-'+Modify.year();
+                }else{
+                    //DateTimeValue = '0'+Modify.month()+'-'+Modify.day()+'-'+Modify.year()+' '+Modify.hour()+':'+Modify.minute();
+                    DateTimeValue = '0'+Modify.month()+'-'+Modify.day()+'-'+Modify.year();
+                })*/
+                
+                //String DateTimeValue = ''+objFieldHis.Opportunity.LastModifiedDate;
+                objwraList.add(new wrapClass(String.valueOf(objFieldHis.Id),objFieldHis.DataType, objFieldHis.Field,LabelName,String.valueOf(objFieldHis.OpportunityId),String.valueOf(objFieldHis.NewValue),String.valueOf(objFieldHis.OldValue),String.valueOf(DateTimeValue),objFieldHis.Opportunity.LastModifiedBy.Name));
+            }
+        }
+        return objwraList;
+    } 
+    
+    public class wrapClass{
+        @AuraEnabled public String Id;
+        @AuraEnabled public String DataType;
+        @AuraEnabled public String Field;
+        @AuraEnabled public String FieldLabel;
+        @AuraEnabled public String OpportunityId;
+        @AuraEnabled public String NewValue;
+        @AuraEnabled public String OldValue;
+        @AuraEnabled public String LastModifiedDate;
+        @AuraEnabled public String LastModifiedName;
+        public wrapClass(String Id,String DataType,String Field,String FieldLabel,String OpportunityId,String NewValue,String OldValue,String LastModifiedDate,String LastModifiedName){
+            this.Id = Id;
+            this.DataType = DataType;
+            this.Field = Field;
+            this.FieldLabel = FieldLabel;
+            this.OpportunityId = OpportunityId;
+            this.NewValue = NewValue;
+            this.OldValue = OldValue;
+            this.LastModifiedDate = LastModifiedDate;
+            this.LastModifiedName = LastModifiedName;
+        }
+    }
+}

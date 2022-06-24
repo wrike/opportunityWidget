@@ -1,0 +1,43 @@
+<aura:component controller="OppFieldHistoryCTRL" implements="force:appHostable,force:hasRecordId,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="lstoppHis" type="String[]" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="recordId" type="String" />
+    <br/>
+    <br/>
+    <div class="slds">
+        <div>
+           <b> Opportunity Field History </b>
+            <lightning:button variant="brand" label="Full History" title="Full History" onclick="{! c.fullHistory }" />
+        </div>
+        <table class="slds-table slds-table_bordered slds-table_striped slds-table_cell-buffer slds-table_fixed-layout">
+            <thead>
+                <tr class="slds-text-heading_label">
+                    
+                    <!--<th scope="col"><div class="slds-truncate" title="Id">Id</div></th>-->
+                    <!--<th scope="col"><div class="slds-truncate" title="DataType">DataType</div></th>-->
+                    <!--<th scope="col"><div class="slds-truncate" title="Field">Field</div></th>-->
+                    <!--<th scope="col"><div class="slds-truncate" title="OpportunityId">OpportunityId</div></th>-->
+                    <th scope="col"><div class="slds-truncate" title="New Value">New Value</div></th>
+                    <!--<th scope="col"><div class="slds-truncate" title="OldValue">OldValue</div></th>-->
+                    <th scope="col"><div class="slds-truncate" title="Edited By Name">Edited By</div></th>
+                    <th scope="col"><div class="slds-truncate" title="Edit Date/Time">Edit Date</div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <aura:iteration items="{!v.lstoppHis}" var="OppHis">
+                    <tr>
+                        
+                       <!-- <td><div class="slds-truncate" title="{!OppHis.Id}">{!OppHis.Id}</div></td>-->
+                       <!-- <td><div class="slds-truncate" title="{!OppHis.DataType}">{!OppHis.DataType}</div></td>-->
+                       <!-- <td><div class="slds-truncate" title="{!OppHis.FieldLabel}">{!OppHis.FieldLabel}</div></td>-->
+                        <!--<td><div class="slds-truncate" title="{!OppHis.OpportunityId}">{!OppHis.OpportunityId}</div></td>-->
+                        <td><div class="slds-truncate" title="{!OppHis.NewValue}">{!OppHis.NewValue}</div></td>
+                       <!-- <td><div class="slds-truncate" title="{!OppHis.OldValue}">{!OppHis.OldValue}</div></td>-->
+                        <td><div class="slds-truncate" title="{!OppHis.LastModifiedName}">{!OppHis.LastModifiedName}</div></td>
+                        <td><div class="slds-truncate" title="{!OppHis.LastModifiedDate}">{!OppHis.LastModifiedDate}</div></td>
+                    </tr>
+                </aura:iteration>
+            </tbody>
+        </table>
+    </div>
+</aura:component>

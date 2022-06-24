@@ -1,0 +1,15 @@
+({
+    getOppList: function(component) {
+        var recordId = component.get('v.recordId');
+        var action = component.get('c.GetOppField');
+        // Set up the callback
+        var self = this;
+        action.setParams({
+            oppId: recordId
+        });
+        action.setCallback(this, function(actionResult) {
+            component.set('v.lstoppHis', actionResult.getReturnValue());
+        });
+        $A.enqueueAction(action);
+    }
+})

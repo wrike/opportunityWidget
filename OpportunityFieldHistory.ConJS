@@ -1,0 +1,8 @@
+({
+    doInit : function(component, event, helper) {
+        helper.getOppList(component);
+    },
+     fullHistory : function(component, event, helper) {
+        alert('These are full History records');
+    }
+})
